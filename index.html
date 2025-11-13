@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Health Chatbot</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Background Image Container -->
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+
+    <!-- Chat Container -->
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        <div>
+          <h2>AI Health Chatbot</h2>
+          <p class="patient-info" id="patient-info"></p>
+        </div>
+      </div>
+
+      <div id="chat-box" class="chat-box"></div>
+
+      <form id="chat-form" class="chat-form">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your message..."
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
