@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Health Chatbot - Loading</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        overflow: hidden;
+      }
+
+      /* Loading Container */
+      .loading-container {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 450px;
+        width: 90%;
+        animation: fadeIn 0.5s ease;
+      }
+
+      /* Medical Icon Animation */
+      .medical-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 30px;
+        position: relative;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .medical-icon::before {
+        content: "🏥";
+        font-size: 80px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* Heartbeat Animation */
+      .heartbeat {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 20px;
+        position: relative;
+        animation: heartbeat 1.5s ease-in-out infinite;
+      }
+
+      .heartbeat::before {
+        content: "❤️";
+        font-size: 60px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      h2 {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .loading-message {
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+
+      .loading-message strong {
+        color: #4facfe;
+        font-weight: 600;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        width: 100%;
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 25px 0;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        border-radius: 10px;
+        animation: loading 30s ease-out forwards;
+      }
+
+      /* Loading Dots */
+      .loading-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin: 20px 0;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        background: #4facfe;
+        border-radius: 50%;
+        animation: bounce 1.4s ease-in-out infinite;
+      }
+
+      .dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      /* Status Messages */
+      .status-message {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 15px;
+        font-style: italic;
+        min-height: 20px;
+      }
+
+      /* Timer */
+      .timer {
+        display: inline-block;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 15px 0;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+      }
+
+      /* Info Box */
+      .info-box {
+        background: #f8f9fa;
+        border-left: 4px solid #4facfe;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-align: left;
+      }
+
+      .info-box p {
+        color: #555;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 5px 0;
+      }
+
+      .info-box strong {
+        color: #2c3e50;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        10%,
+        30% {
+          transform: scale(1.1);
+        }
+        20%,
+        40% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes loading {
+        0% {
+          width: 0%;
+        }
+        10% {
+          width: 15%;
+        }
+        30% {
+          width: 40%;
+        }
+        50% {
+          width: 60%;
+        }
+        70% {
+          width: 80%;
+        }
+        90% {
+          width: 95%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 500px) {
+        .loading-container {
+          padding: 40px 25px;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .loading-message {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-container">
+      <div class="heartbeat"></div>
+
+      <h2>Starting AI Health Assistant</h2>
+
+      <p class="loading-message">
+        Please wait while we <strong>wake up</strong> your health chatbot...<br />
+        This may take up to <strong>30 seconds</strong> on first visit.
+      </p>
+
+      <div class="timer" id="timer">⏱️ <span id="countdown">30</span>s</div>
+
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+
+      <div class="loading-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <p class="status-message" id="status">Connecting to server...</p>
+
+      <div class="info-box">
+        <p><strong>💡 Why the wait?</strong></p>
+        <p>
+          We use free cloud hosting that sleeps when not in use. This helps keep
+          the service free for everyone!
+        </p>
+        <p>
+          <strong>⚡ Good news:</strong> Once loaded, the chatbot will be fast
+          and responsive!
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Countdown timer
+      let seconds = 10;
+      const countdownEl = document.getElementById("countdown");
+      const statusEl = document.getElementById("status");
+
+      const statusMessages = [
+        "Connecting to server...",
+        "Waking up the AI assistant...",
+        "Loading patient database...",
+        "Preparing chat interface...",
+        "Initializing health modules...",
+        "Almost ready...",
+        "Final checks...",
+        "Ready to assist you!",
+      ];
+
+      let messageIndex = 0;
+
+      const countdownInterval = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+
+        // Update status message every 4 seconds
+        if (seconds % 4 === 0 && messageIndex < statusMessages.length - 1) {
+          messageIndex++;
+          statusEl.textContent = statusMessages[messageIndex];
+        }
+
+        if (seconds <= 0) {
+          clearInterval(countdownInterval);
+          statusEl.textContent = statusMessages[statusMessages.length - 1];
+
+          // Redirect to main app after loading
+          setTimeout(() => {
+            // Replace this URL with your actual form/chat page
+            window.location.href = "index.html";
+          }, 1000);
+        }
+      }, 1000);
+
+      // Alternative: Check if backend is ready
+      async function checkBackendReady() {
+        try {
+          const response = await fetch("http://127.0.0.1:5000/health-check", {
+            method: "GET",
+          });
+
+          if (response.ok) {
+            clearInterval(countdownInterval);
+            statusEl.textContent = "✅ Server is ready!";
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 500);
+          }
+        } catch (error) {
+          // Server not ready yet, keep waiting
+        }
+      }
+
+      // Check every 2 seconds if backend is ready
+      const checkInterval = setInterval(checkBackendReady, 2000);
+
+      // Stop checking after 35 seconds
+      setTimeout(() => {
+        clearInterval(checkInterval);
+      }, 35000);
+    </script>
+  </body>
+</html>

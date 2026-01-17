@@ -7,16 +7,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Background Image Container -->
     <div class="background-image"></div>
     <div class="background-overlay"></div>
 
-    <!-- Chat Container -->
-    <div class="chat-container" id="chat-container">
+    <div class="chat-container">
       <div class="chat-header">
         <div>
           <h2>AI Health Chatbot</h2>
           <p class="patient-info" id="patient-info"></p>
+        </div>
+
+        <div class="header-actions">
+          <button id="new-chat-btn" class="new-chat-btn">New Chat</button>
+          <button id="new-patient-btn" class="new-patient-btn">
+            New Patient
+          </button>
         </div>
       </div>
 
@@ -24,10 +29,9 @@
 
       <form id="chat-form" class="chat-form">
         <input
-          type="text"
           id="user-input"
+          type="text"
           placeholder="Type your message..."
-          autocomplete="off"
           required
         />
         <button type="submit">Send</button>
