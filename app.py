@@ -8,8 +8,12 @@ from database import (
     save_message, get_chat_history, delete_chat_session
 )
 
+from init_db import init_database 
 # Load environment variables
 load_dotenv()
+
+init_database() 
+
 
 app = Flask(__name__)
 CORS(app)
