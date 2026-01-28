@@ -1,8 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory  # ← All in one!
 from flask_cors import CORS
 import os
 from groq import Groq
-from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 from database import (
     create_patient, get_patient, create_chat_session, 
@@ -13,11 +12,9 @@ from init_db import init_database
 # Load environment variables
 load_dotenv()
 
-init_database() 
-
-
 app = Flask(__name__)
 CORS(app)
+
 
 # ✅ Load API key from environment variable
 api_key = os.getenv("GROQ_API_KEY")
@@ -28,6 +25,9 @@ if not api_key:
 
 # ✅ Initialize Groq client
 client = Groq(api_key=api_key)
+
+# ✅ Initialize database tables on startup
+init_database()  # ← Move HERE (after everything is set up)
 
 @app.route("/register-patient", methods=["POST"])
 def register_patient():
