@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -94,7 +94,7 @@
 
           // Ask for confirmation BEFORE sending
           const userConfirm = confirm(
-            "Are you sure you want to submit your information?"
+            "Are you sure you want to submit your information?",
           );
           if (!userConfirm) {
             console.log("User canceled the submission.");
@@ -121,14 +121,14 @@
 
             // Send to backend
             const response = await fetch(
-              "http://127.0.0.1:5000/register-patient",
+              "https://ai-health-chatbot-n08h.onrender.com/register-patient",
               {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify(patientData),
-              }
+              },
             );
 
             console.log("Response received:", response.status);
@@ -139,7 +139,7 @@
             if (result.success) {
               console.log("✅ Patient registered! ID:", result.patient_id);
               alert(
-                "Patient registered successfully! ID: " + result.patient_id
+                "Patient registered successfully! ID: " + result.patient_id,
               );
 
               // Save patient_id to localStorage

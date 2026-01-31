@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       console.log("Sending to backend...");
       
-      const response = await fetch("http://127.0.0.1:5000/chat", {
+      fetch("https://ai-health-chatbot-n08h.onrender.com/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -213,7 +213,7 @@ if (newChatBtn) {
 
     try {
       // Tell backend to delete old session
-      await fetch("http://127.0.0.1:5000/new-chat", {
+      fetch("https://ai-health-chatbot-n08h.onrender.com/new-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId })
