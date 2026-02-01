@@ -6,6 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const newChatBtn = document.getElementById("new-chat-btn");
   const patientInfoEl = document.getElementById("patient-info");
 
+  // 🚀 AUTO-DETECT: Use localhost when testing, Render when deployed
+  const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://ai-health-chatbot-n08h.onrender.com';
+  
+  console.log("🟢 API URL:", API_URL);
+
   // 🆕 Get patient data from localStorage
   const patientData = JSON.parse(localStorage.getItem('patientData'));
   const patientId = localStorage.getItem('patient_id');
@@ -58,7 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       console.log("Sending to backend...");
       
-      fetch("https://ai-health-chatbot-n08h.onrender.com/chat", {
+      // ✅ Use the auto-detected API URL
+      const response = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -72,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       console.log("Response received:", response.status);
-
+      
       const data = await response.json();
       console.log("Data:", data);
       
@@ -207,43 +215,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🆕 New Chat button handler
-if (newChatBtn) {
-  newChatBtn.onclick = async () => {
-    if (!confirm("Start a new chat? Current conversation will be cleared.")) return;
+  if (newChatBtn) {
+    newChatBtn.onclick = async () => {
+      if (!confirm("Start a new chat? Current conversation will be cleared.")) return;
 
-    try {
-      // Tell backend to delete old session
-      fetch("https://ai-health-chatbot-n08h.onrender.com/new-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId })
-      });
+      try {
+        // Tell backend to delete old session - use auto-detected URL
+        await fetch(`${API_URL}/new-chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId })
+        });
 
-      // Clear chat UI
-      chatBox.innerHTML = "";
+        // Clear chat UI
+        chatBox.innerHTML = "";
 
-      // Create a NEW session ID
-      sessionId =
-        "chat_" +
-        Date.now() +
-        "_" +
-        Math.random().toString(36).substr(2, 9);
+        // Create a NEW session ID
+        sessionId =
+          "chat_" +
+          Date.now() +
+          "_" +
+          Math.random().toString(36).substr(2, 9);
 
-      console.log("New Session ID:", sessionId);
+        console.log("New Session ID:", sessionId);
 
-      // Show welcome message again
-      addMessage(
-        `Hello ${patientData.firstName}! I'm your AI health assistant, Tam. How can I help you today?`,
-        "bot"
-      );
+        // Show welcome message again
+        addMessage(
+          `Hello ${patientData.firstName}! I'm your AI health assistant, Tam. How can I help you today?`,
+          "bot"
+        );
 
-    } catch (error) {
-      console.error("Failed to start new chat:", error);
-      alert("Failed to start a new chat. Please try again.");
-    }
-  };
-}
-
+      } catch (error) {
+        console.error("Failed to start new chat:", error);
+        alert("Failed to start a new chat. Please try again.");
+      }
+    };
+  }
 
   // Show initial welcome message
   console.log("Showing welcome message");
