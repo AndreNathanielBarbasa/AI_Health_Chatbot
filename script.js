@@ -6,6 +6,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const newChatBtn = document.getElementById("new-chat-btn");
   const patientInfoEl = document.getElementById("patient-info");
 
+  // 📱 MOBILE KEYBOARD FIX - Scroll input into view when focused
+  if (input) {
+    input.addEventListener('focus', function() {
+      // Small delay to allow keyboard to appear
+      setTimeout(() => {
+        // Scroll to bottom of chat
+        if (chatBox) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        // Scroll input into view on mobile
+        this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      }, 300);
+    });
+
+    // Prevent zoom on iOS when input is focused
+    input.addEventListener('touchstart', function() {
+      this.style.fontSize = '16px';
+    });
+  }
+
+  // 📱 Handle window resize (when keyboard appears/disappears)
+  let lastHeight = window.innerHeight;
+  window.addEventListener('resize', () => {
+    const currentHeight = window.innerHeight;
+    
+    // If height decreased significantly, keyboard probably appeared
+    if (lastHeight - currentHeight > 150) {
+      setTimeout(() => {
+        if (chatBox) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+      }, 100);
+    }
+    
+    lastHeight = currentHeight;
+  });
+
   // 🚀 AUTO-DETECT: Use localhost when testing, Render when deployed
   const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
@@ -58,6 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show user message
     addMessage(userMessage, 'user');
     input.value = "";
+
+    // 📱 Blur input to hide keyboard on mobile after sending
+    if (window.innerWidth <= 600) {
+      input.blur();
+    }
 
     // Show typing indicator
     const typingId = showTypingIndicator();
@@ -123,7 +166,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    // 📱 Smooth scroll to bottom with better mobile support
+    setTimeout(() => {
+      chatBox.scrollTop = chatBox.scrollHeight;
+      // Force scroll for iOS
+      if (chatBox.scrollTo) {
+        chatBox.scrollTo({
+          top: chatBox.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
+    
     console.log("Message added to chatBox");
   }
 
@@ -160,7 +215,17 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     
     chatBox.appendChild(typingDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    // 📱 Scroll to show typing indicator
+    setTimeout(() => {
+      chatBox.scrollTop = chatBox.scrollHeight;
+      if (chatBox.scrollTo) {
+        chatBox.scrollTo({
+          top: chatBox.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
     
     return typingDiv;
   }
@@ -204,7 +269,17 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     
     chatBox.appendChild(alertDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    // 📱 Scroll to show emergency alert
+    setTimeout(() => {
+      chatBox.scrollTop = chatBox.scrollHeight;
+      if (chatBox.scrollTo) {
+        chatBox.scrollTo({
+          top: chatBox.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
     
     // Try to play alert sound
     try {
@@ -256,4 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Showing welcome message");
   addMessage(`Hello ${patientData.firstName}! I'm your AI health assistant, My name is Tam. How can I help you today?`, 'bot');
   console.log("Welcome message should be visible now");
+
+  
 });
